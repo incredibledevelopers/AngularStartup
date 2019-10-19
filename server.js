@@ -4,8 +4,13 @@ const path = require('path');
 
 const app = express();
 
-// All other routes should redirect to the index.html
-  app.route('/*')
-    .get(function(req, res) {
-      res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-    });
+// Serve only the static files form the dist directory
+app.use(express.static('angularherokutestapp' + '/dist/angularherokutestapp'));
+
+app.get('/*', function(req,res) {
+    
+res.sendFile(path.join('angularherokutestapp'+'/dist/angularherokutestapp/index.html'));
+});
+
+// Start the app by listening on the default Heroku port
+app.listen(process.env.PORT || 8080);
