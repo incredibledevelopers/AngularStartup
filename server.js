@@ -6,7 +6,8 @@ const app = express();
 // Serve only the static files form the dist directory    
 
 
-app.get('*', function (req, res) {
-  const index = path.join(__dirname, 'build', 'index.html');
-  res.sendFile(index);
+app.use(express.static(__dirname + '/dist/angularherokutestapp'));
+app.get('/*', function(req,res) {
+res.sendFile(path.join(__dirname + '/dist/angularherokutestapp/index.html'));
+
 });
