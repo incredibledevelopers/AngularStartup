@@ -1,16 +1,30 @@
-//Install express server
-const express = require('express');
-const path = require('path');
+var express = require('express');
+var path = require('path');
+//var mongoose = require('mongoose');
 
-const app = express();
+var app = express();
 
-// Serve only the static files form the dist directory
-app.use(express.static('angularherokutestapp' + '/dist/angularherokutestapp'));
+var rootPath = path.normalize(__dirname) + '/../';
+var bodyParser = require('body-parser');
 
-app.get('/*', function(req,res) {
-    
-res.sendFile(path.join('angularherokutestapp'+'/dist/angularherokutestapp/index.html'));
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
+app.use(express.static(rootPath + '/app'));
+app.use(express.static(__dirname + '/app'));
+//app.use(express.static(__dirname + '/app/assets/images'));
+
+app.get('/*', function (req, res) { res.sendFile(path.resolve('app/index.html')); });
+
+//mongoose.connect('mongodb://username:password@something.mongolab.com:port/db');
+
+//var db = mongoose.connection;
+//db.on('error', console.error.bind(console, 'connection error:'));
+//db.once('open', function(){
+//    console.log('Connected to mongodb successfully!');
+//});
+
+app.set('port', (process.env.PORT || 5000));
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
 });
-
-// Start the app by listening on the default Heroku port
-app.listen(process.env.PORT || 8080);
